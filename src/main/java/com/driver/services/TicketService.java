@@ -52,26 +52,40 @@ public class TicketService {
 
         //ticket corresponding to train
         List<Ticket>ticketList=train.getBookedTickets();
-        if(train.getNoOfSeats()<ticketList.size() + bookTicketEntryDto.getNoOfSeats())
+//        if(train.getNoOfSeats()<ticketList.size() + bookTicketEntryDto.getNoOfSeats())
+//        {
+//            throw new Exception("Less tickets are available");
+//        }
+        Integer bookedTickets=0;
+        for(Ticket ticket : ticketList){
+            List<Passenger>list=ticket.getPassengersList();
+            bookedTickets+=list.size();
+        }
+
+
+        if(train.getNoOfSeats()<bookedTickets + bookTicketEntryDto.getNoOfSeats())
         {
             throw new Exception("Less tickets are available");
         }
+        List<Integer>ids=bookTicketEntryDto.getPassengerIds();
 
-        List<Integer>passengerList=bookTicketEntryDto.getPassengerIds();
+        List<Passenger>passengerList=new ArrayList<>();
 
-        if(passengerList.contains(bookTicketEntryDto.getBookingPersonId())==false){
-            throw new Exception("Invalid passenger id");
+        for(Integer id :ids){
+            passengerList.add(passengerRepository.findById(id).get());
         }
 
         String route=train.getRoute();
         String routes[]=route.split(",");
+
         int distance=0;
         int i=0;;
         String start=String.valueOf(bookTicketEntryDto.getFromStation());
-        int start_index=0;
+        int start_index=-1;
         String end=String.valueOf(bookTicketEntryDto.getToStation());
-        int end_index=0;
+        int end_index=-1;
         boolean flag=false;
+
         for(i=0;i<routes.length;i++){
             String str=routes[i];
             if(str==start){
@@ -83,27 +97,34 @@ public class TicketService {
                 end_index=i;
             }
         }
-        if(flag=false){
-            throw  new Exception("Invalid stations");
+//        if(flag=false){
+//            throw  new Exception("Invalid stations");
+//        }
+
+        if(start_index==-1||end_index==-1||end_index-start_index<0){
+            throw new Exception("Invalid stations");
         }
         distance=end_index-start_index+1;
-        int fair=distance*100;
+        int fair=bookTicketEntryDto.getNoOfSeats()*(distance)*300;
 
         Ticket ticket=new Ticket();
         ticket.setFromStation(bookTicketEntryDto.getFromStation());
         ticket.setToStation(bookTicketEntryDto.getToStation());
         ticket.setTotalFare(fair);
-
+        ticket.setPassengersList(passengerList);
         ticket.setTrain(train);
 
-        ticket.getPassengersList().add(passenger);
+
         train.getBookedTickets().add(ticket);
+        //train.setNoOfSeats();
         passenger.getBookedTickets().add(ticket);
-        ticketRepository.save(ticket);
-        trainRepository.save(train);
+
+
        // passengerRepository.save(passenger);
 
-       return (Integer)ticket.getTicketId();
+        trainRepository.save(train);
+
+        return ticketRepository.save(ticket).getTicketId();
 
     }
 }
