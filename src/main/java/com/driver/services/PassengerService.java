@@ -6,6 +6,8 @@ import com.driver.repository.PassengerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class PassengerService {
 
@@ -14,11 +16,16 @@ public class PassengerService {
 
     public Integer addPassenger(Passenger passenger){
         //Add the passenger Object in the passengerDb and return the passegnerId that has been returned
-        passengerRepository.save(passenger);
-        passenger=passengerRepository.findById(passenger.getPassengerId()).get();
+
+        Passenger passenger1=new Passenger();
+        passenger1.setAge(passenger.getAge());
+        passenger1.setName(passenger.getName());
+        passenger1.setBookedTickets(passenger.getBookedTickets());
+        passengerRepository.save(passenger1);
 
 
-        return (Integer)passenger.getPassengerId();
+
+        return (Integer)passenger1.getPassengerId();
     }
 
 }
