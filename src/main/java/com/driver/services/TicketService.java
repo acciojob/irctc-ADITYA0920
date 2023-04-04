@@ -79,14 +79,14 @@ public class TicketService {
         String routes[]=route.split(",");
 
         int distance=0;
-        int i=0;;
+
         String start=String.valueOf(bookTicketEntryDto.getFromStation());
         int start_index=-1;
         String end=String.valueOf(bookTicketEntryDto.getToStation());
         int end_index=-1;
         boolean flag=false;
 
-        for(i=0;i<routes.length;i++){
+        for(int i=0;i<routes.length;i++){
             String str=routes[i];
             if(str.equals(start)){
                 flag=true;
@@ -103,7 +103,7 @@ public class TicketService {
 //            throw  new Exception("Invalid stations");
 //        }
 
-        if(start_index==-1||end_index==-1||end_index-start_index<0){
+        if((start_index==-1||end_index==-1)||end_index-start_index<0){
             throw new Exception("Invalid stations");
         }
         distance=end_index-start_index+1;
@@ -120,6 +120,7 @@ public class TicketService {
         train.getBookedTickets().add(ticket);
         //train.setNoOfSeats();
         passenger.getBookedTickets().add(ticket);
+        train.setNoOfSeats(train.getNoOfSeats()-bookTicketEntryDto.getNoOfSeats());
 
 
        // passengerRepository.save(passenger);

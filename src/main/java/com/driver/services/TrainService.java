@@ -26,25 +26,41 @@ public class TrainService {
         //and route String logic to be taken from the Problem statement.
         //Save the train and return the trainId that is generated from the database.
         //Avoid using the lombok library
-        Train train=new Train();
-        List<Station>stationList=trainEntryDto.getStationRoute();
+//        Train train=new Train();
+//        List<Station>stationList=trainEntryDto.getStationRoute();
+//
+//        //M  converting list of station to Single route
+//        StringBuilder sb=new StringBuilder();
+//        for(Station station : stationList){
+//            String temp=String.valueOf(station);
+//            sb.append(temp).append(",");
+//        }
+//
+//        String route =sb.toString();
+//      //  System.out.println(route);
+//
+//        train.setDepartureTime(trainEntryDto.getDepartureTime());
+//        train.setNoOfSeats(trainEntryDto.getNoOfSeats());
+//        train.setBookedTickets(new ArrayList<>());
+//        train.setRoute(route);
+//        trainRepository.save(train);
+//
+//        return trainRepository.save(train).getTrainId();
+        Train train = new Train();
+        train.setNoOfSeats(trainEntryDto.getNoOfSeats());
 
-        //M  converting list of station to Single route
-        StringBuilder sb=new StringBuilder();
-        for(Station station : stationList){
-            String temp=String.valueOf(station);
-            sb.append(temp).append(",");
+        List<Station> list = trainEntryDto.getStationRoute();
+        String route = "";
+
+        for(int i=0;i<list.size();i++){
+            if(i==list.size()-1)
+                route += list.get(i);
+            else
+                route += list.get(i) + ",";
         }
-
-        String route =sb.toString();
-      //  System.out.println(route);
+        train.setRoute(route);
 
         train.setDepartureTime(trainEntryDto.getDepartureTime());
-        train.setNoOfSeats(trainEntryDto.getNoOfSeats());
-        train.setBookedTickets(new ArrayList<>());
-        train.setRoute(route);
-        trainRepository.save(train);
-
         return trainRepository.save(train).getTrainId();
 
        // return null;
