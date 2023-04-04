@@ -85,7 +85,10 @@ public class TrainService {
             int curr_toId=hm.get(ticket.getToStation());
 
             if(curr_fromId<=fromId && curr_toId>=toId){
-                cnt++;
+                List<Passenger>list=ticket.getPassengersList();
+                for(int i=0;i<list.size();i++){
+                    cnt++;
+                }
             }
         }
         int available=train.getNoOfSeats()-cnt;
@@ -105,23 +108,29 @@ public class TrainService {
         Train train=trainRepository.findById(trainId).get();
         if(train==null) return null;
         String stations=train.getRoute();
-
-        String routes[]=stations.split(",");
-
-        String Station="";
-        for( String route : routes){
-            if(String.valueOf(station)==route){
-                Station=route;
-            }
-        }
-        if(Station==""){
+        if(stations.contains(station.toString())==false)
             throw new Exception("Train is not passing from this station");
-        }
+//        String routes[]=stations.split(",");
+
+//        String Station="";
+//        for( String route : routes){
+//            if(String.valueOf(station)==route){
+//
+//                Station=route;
+//            }
+//        }
+
+//        if(Station==""){
+//            throw new Exception("Train is not passing from this station");
+//        }
         int cnt=0;
         List<Ticket>list=train.getBookedTickets();
         for(Ticket ticket : list){
             if(ticket.getFromStation()==station){
-                cnt++;
+                List<Passenger>list1=ticket.getPassengersList();
+                for(int i=0;i<list1.size();i++){
+                    cnt++;
+                }
             }
         }
 
