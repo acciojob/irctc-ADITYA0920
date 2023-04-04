@@ -102,7 +102,7 @@ public class TicketService {
         trainRepository.save(train);
        // passengerRepository.save(passenger);
 
-       return null;
+       return ticket.getTicketId();
 
     }
 }
