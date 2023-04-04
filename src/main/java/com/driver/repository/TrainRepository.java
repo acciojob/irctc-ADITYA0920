@@ -12,5 +12,5 @@ import java.util.List;
 @Repository
 public interface TrainRepository extends JpaRepository<Train,Integer> {
 
-    List<Train>findByDepartureTimeBetween(LocalTime startTime, LocalTime endTime);
+   // List<Train>findByDepartureTimeBetween(LocalTime startTime, LocalTime endTime);
 }
