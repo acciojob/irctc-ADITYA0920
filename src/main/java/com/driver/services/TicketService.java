@@ -95,10 +95,11 @@ public class TicketService {
         ticket.setTotalFare(fair);
 
         ticket.setTrain(train);
+
         ticket.getPassengersList().add(passenger);
         train.getBookedTickets().add(ticket);
         passenger.getBookedTickets().add(ticket);
-
+        ticketRepository.save(ticket);
         trainRepository.save(train);
        // passengerRepository.save(passenger);
 
