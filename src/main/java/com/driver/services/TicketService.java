@@ -42,11 +42,6 @@ public class TicketService {
         //Also in the passenger Entity change the attribute bookedTickets by using the attribute bookingPersonId.
        //And the end return the ticketId that has come from db
 
-        List<Integer>passengerList=bookTicketEntryDto.getPassengerIds();
-
-        if(passengerList.contains(bookTicketEntryDto.getBookingPersonId())==false){
-            throw new Exception("Invalid passenger id");
-        }
 
         //getting passenger
         Passenger passenger=passengerRepository.findById(bookTicketEntryDto.getBookingPersonId()).get();
@@ -61,6 +56,13 @@ public class TicketService {
         {
             throw new Exception("Less tickets are available");
         }
+
+        List<Integer>passengerList=bookTicketEntryDto.getPassengerIds();
+
+        if(passengerList.contains(bookTicketEntryDto.getBookingPersonId())==false){
+            throw new Exception("Invalid passenger id");
+        }
+
         String route=train.getRoute();
         String routes[]=route.split(",");
         int distance=0;

@@ -135,19 +135,19 @@ public class TrainService {
         //If there are no people travelling in that train you can return 0
         Train train=trainRepository.findById(trainId).get();
         List<Ticket>ticketList=train.getBookedTickets();
-        int min=Integer.MAX_VALUE;
+        int max=Integer.MIN_VALUE;
         boolean flag=false;
         for(Ticket ticket : ticketList){
             List<Passenger>passengerList =ticket.getPassengersList();
             for(Passenger passenger : passengerList){
                 flag=true;
-                if(passenger.getAge()<min){
-                    min=passenger.getAge();
+                if(passenger.getAge()>max){
+                    max=passenger.getAge();
                 }
             }
         }
 
-        return flag==false ? 0 : min;
+        return flag==false ? 0 : max;
     }
 
     public List<Integer> trainsBetweenAGivenTime(Station station, LocalTime startTime, LocalTime endTime){
