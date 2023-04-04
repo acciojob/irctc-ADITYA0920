@@ -18,7 +18,7 @@ public class PassengerService {
         passenger=passengerRepository.findById(passenger.getPassengerId()).get();
 
 
-        return passenger.getPassengerId();
+        return (Integer)passenger.getPassengerId();
     }
 
 }
