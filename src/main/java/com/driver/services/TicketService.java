@@ -88,13 +88,15 @@ public class TicketService {
 
         for(i=0;i<routes.length;i++){
             String str=routes[i];
-            if(str==start){
+            if(str.equals(start)){
                 flag=true;
                 start_index=i;
+                break;
             }
-            if(str==end){
+            if(str.equals(end)){
                 flag=true;
                 end_index=i;
+                break;
             }
         }
 //        if(flag=false){
